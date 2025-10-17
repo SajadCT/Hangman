@@ -8,6 +8,23 @@ import (
 	"strings"
 )
 
+type Hangman struct {
+	secretWord       string
+	guessLetter      []byte
+	correctGuesses   []byte
+	remainingChanses uint
+}
+
+func newHangman(secretWord string) Hangman {
+	return Hangman{
+		secretWord:       secretWord,
+		guessLetter:      []byte{},
+		correctGuesses:   []byte{},
+		remainingChanses: 7,
+	}
+
+}
+
 func containsPunctuation(s string) bool {
 	for _, ch := range s {
 		if ch < 'a' || ch > 'z' {
@@ -36,6 +53,10 @@ func getSecretWord(wordFileName string) string {
 	randomNum := rand.Intn(len(allowedWords))
 	return allowedWords[randomNum]
 
+}
+func getNewState(state Hangman, userInput string) Hangman {
+
+	return state
 }
 
 func main() {
