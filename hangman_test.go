@@ -119,3 +119,37 @@ func TestCorrectGuess2(t *testing.T) {
 		t.Errorf("Remaining chances is modified")
 	}
 }
+func TestWrongGuess(t *testing.T) {
+	secretWord := "soldier"
+	guess := 'b'
+	currentState := Hangman{
+		secretWord:       secretWord,
+		guessLetter:      []byte{'a'},
+		correctGuesses:   []byte{},
+		remainingChances: 6,
+	}
+
+	newState := checkGuess(currentState, byte(guess))
+
+	expected := Hangman{
+		secretWord:       secretWord,
+		guessLetter:      []byte{'a', 'b'},
+		correctGuesses:   []byte{},
+		remainingChances: 5,
+	}
+
+	if newState.secretWord != expected.secretWord {
+		t.Errorf("Secret word is modified")
+	}
+	if !bytes.Equal(newState.guessLetter, expected.guessLetter) {
+		t.Errorf("Guess should be %q but got %q", expected.guessLetter, newState.guessLetter)
+	}
+
+	if !bytes.Equal(newState.correctGuesses, expected.correctGuesses) {
+		t.Errorf("Correct Guess should be %q but got %q", expected.correctGuesses, newState.correctGuesses)
+	}
+
+	if !(newState.remainingChances == expected.remainingChances) {
+		t.Errorf("Remaining chances is modified")
+	}
+}
