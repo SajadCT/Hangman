@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"math/rand"
 	"os"
@@ -12,7 +13,7 @@ type Hangman struct {
 	secretWord       string
 	guessLetter      []byte
 	correctGuesses   []byte
-	remainingChanses uint
+	remainingChances uint
 }
 
 func newHangman(secretWord string) Hangman {
@@ -20,7 +21,7 @@ func newHangman(secretWord string) Hangman {
 		secretWord:       secretWord,
 		guessLetter:      []byte{},
 		correctGuesses:   []byte{},
-		remainingChanses: 7,
+		remainingChances: 7,
 	}
 
 }
@@ -54,8 +55,12 @@ func getSecretWord(wordFileName string) string {
 	return allowedWords[randomNum]
 
 }
-func getNewState(state Hangman, userInput string) Hangman {
+func checkGuess(state Hangman, guess byte) Hangman {
+	if state.remainingChances > 1 && strings.ContainsRune(state.secretWord, rune(guess)) && !bytes.Contains(state.guessLetter, []byte{guess}) {
+		state.correctGuesses = append(state.correctGuesses, guess)
+		state.guessLetter = append(state.guessLetter, guess)
 
+	}
 	return state
 }
 
