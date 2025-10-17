@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"strings"
@@ -57,5 +58,30 @@ func TestSecretWordPunctuations(t *testing.T) {
 	secretWord := getSecretWord(wordList)
 	if secretWord != "monkey" {
 		t.Errorf("Should get 'monkey' but Got %s", secretWord)
+	}
+}
+
+func TestCorrectGuess(t *testing.T) {
+	secretWord := "soldier"
+	guess := 's'
+	currentState := newHangman(secretWord)
+	newState := checkGuess(currentState, byte(guess))
+	expected := Hangman{
+		secretWord:       currentState.secretWord,
+		guessLetter:      append(currentState.guessLetter, byte(guess)),
+		correctGuesses:   append(currentState.correctGuesses, byte(guess)),
+		remainingChances: 7,
+	}
+	if newState.secretWord != expected.secretWord {
+		t.Errorf("Secret word is modified")
+	}
+	if !bytes.Equal(newState.guessLetter, expected.guessLetter) {
+		t.Errorf("Guess should be %q but got %q", expected.guessLetter, newState.guessLetter)
+	}
+	if !bytes.Equal(newState.correctGuesses, expected.correctGuesses) {
+		t.Errorf("Correct Guess should be %q but got %q", expected.correctGuesses, newState.correctGuesses)
+	}
+	if !(newState.remainingChances == expected.remainingChances) {
+		t.Errorf("Remaining chances is modified")
 	}
 }
