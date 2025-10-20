@@ -71,6 +71,23 @@ func checkGuess(state Hangman, guess byte) Hangman {
 	return state
 }
 
+func isGameOver(state Hangman) bool {
+	if hasWon(state) {
+		return true
+	}
+
+	if state.remainingChances == 0 && len(state.guessLetter) == 7 {
+		return true
+	}
+
+	return false
+}
+
+func hasWon(state Hangman) bool {
+	return false
+
+}
+
 func main() {
 	fmt.Println(getSecretWord("/usr/share/dict/words"))
 
