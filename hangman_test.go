@@ -260,3 +260,21 @@ func TestRepeatGuess2(t *testing.T) {
 	}
 
 }
+
+func TestGameEndsLastGuessWrong(t *testing.T) {
+	secretWord := "cat"
+	guess := 'o'
+	currentState := Hangman{
+		secretWord:       secretWord,
+		guessLetter:      []byte{'x', 'y', 'z', 'w', 'u', 'v', 'r'},
+		correctGuesses:   []byte{},
+		remainingChances: 0,
+	}
+
+	newState := checkGuess(currentState, byte(guess))
+
+	if !isGameOver(newState) {
+		t.Errorf("Game is suppose end, but got state: %+v", newState)
+	}
+
+}
