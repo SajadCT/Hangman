@@ -56,7 +56,7 @@ func getSecretWord(wordFileName string) string {
 
 }
 func checkGuess(state Hangman, guess byte) Hangman {
-	if state.remainingChances > 1 && !bytes.Contains(state.guessLetter, []byte{guess}) {
+	if state.remainingChances > 0 && !bytes.Contains(state.guessLetter, []byte{guess}) {
 
 		if strings.ContainsRune(state.secretWord, rune(guess)) { //if guess is correct
 			state.correctGuesses = append(state.correctGuesses, guess)
@@ -76,7 +76,7 @@ func isGameOver(state Hangman) bool {
 		return true
 	}
 
-	if state.remainingChances == 0 && len(state.guessLetter) == 7 {
+	if state.remainingChances == 0 {
 		return true
 	}
 
@@ -84,7 +84,18 @@ func isGameOver(state Hangman) bool {
 }
 
 func hasWon(state Hangman) bool {
-	return false
+
+	correctLetters := make(map[byte]bool)
+	for i := 0; i < len(state.secretWord); i++ {
+		correctLetters[state.secretWord[i]] = true
+	}
+
+	for letter := range correctLetters {
+		if !bytes.Contains(state.correctGuesses, []byte{letter}) {
+			return false
+		}
+	}
+	return true
 
 }
 
