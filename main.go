@@ -104,6 +104,10 @@ func getUserInput() byte {
 	reader := bufio.NewReader(os.Stdin)
 	char, _ := reader.ReadByte()
 	reader.ReadByte()
+
+	if char >= 'A' && char <= 'Z' {
+		char = char + 32
+	}
 	return char
 }
 
@@ -139,6 +143,12 @@ func main() {
 		fmt.Println("Remaining Chances:", game.remainingChances)
 		fmt.Println("Guesses: ", string(game.guessLetter))
 		guess := getUserInput()
+		if guess < 'a' || guess > 'z' {
+			fmt.Println("Please enter a valid character....!!!")
+			fmt.Println()
+			continue
+		}
+
 		game = checkGuess(game, guess)
 
 		if isGameOver(game) {
@@ -150,4 +160,5 @@ func main() {
 		}
 
 	}
+	fmt.Println()
 }
