@@ -99,7 +99,55 @@ func hasWon(state Hangman) bool {
 
 }
 
-func main() {
-	fmt.Println(getSecretWord("/usr/share/dict/words"))
+func getUserInput() byte {
+	fmt.Print("Enter a Character:")
+	reader := bufio.NewReader(os.Stdin)
+	char, _ := reader.ReadByte()
+	reader.ReadByte()
+	return char
+}
 
+func displaySecretWord(state Hangman) string {
+	var word strings.Builder
+
+	for _, ch := range state.secretWord {
+		letter := byte(ch)
+		found := false
+		if bytes.Contains(state.correctGuesses, []byte{letter}) {
+			found = true
+		}
+		if found {
+			word.WriteByte(letter)
+		} else {
+			word.WriteByte('-')
+		}
+	}
+
+	return word.String()
+
+}
+
+func main() {
+
+	secretWord := getSecretWord("/usr/share/dict/words")
+	game := newHangman(secretWord)
+	fmt.Println("WELCOME TO HANGMAN!")
+	fmt.Println(secretWord)
+
+	for !isGameOver((game)) {
+		fmt.Println("Secret Word:", displaySecretWord(game))
+		fmt.Println("Remaining Chances:", game.remainingChances)
+		fmt.Println("Guesses: ", string(game.guessLetter))
+		guess := getUserInput()
+		game = checkGuess(game, guess)
+
+		if isGameOver(game) {
+			if hasWon(game) {
+				fmt.Println("You have won the game!!! The word is:", secretWord)
+			} else {
+				fmt.Println("Sorry!! You loose. the word is:", secretWord)
+			}
+		}
+
+	}
 }
