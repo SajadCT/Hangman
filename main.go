@@ -139,9 +139,9 @@ func main() {
 	fmt.Println(secretWord)
 
 	for !isGameOver((game)) {
-		fmt.Println("Secret Word:", displaySecretWord(game))
-		fmt.Println("Remaining Chances:", game.remainingChances)
-		fmt.Println("Guesses: ", string(game.guessLetter))
+		fmt.Println("Hidden Word:", displaySecretWord(game))
+		fmt.Println("Chancess Remaining:", game.remainingChances)
+		fmt.Println("Guessed Letters : ", string(game.guessLetter))
 		guess := getUserInput()
 		if guess < 'a' || guess > 'z' {
 			fmt.Println("Please enter a valid character....!!!")
@@ -153,9 +153,9 @@ func main() {
 
 		if isGameOver(game) {
 			if hasWon(game) {
-				fmt.Println("You have won the game!!! The word is:", secretWord)
+				fmt.Println("You have won the game! The word is:", secretWord)
 			} else {
-				fmt.Println("Sorry!! You loose. the word is:", secretWord)
+				fmt.Println("Sorry! You loose. the secret word is:", secretWord)
 			}
 		}
 
